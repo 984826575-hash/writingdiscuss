@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discuss 写作 · 关系重塑四模型 | Meta 英硕</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --warm-white: #faf8f3;
+    --accent: #c0392b;
+    --accent-soft: #e8d5d3;
+    --gold: #b8943f;
+    --gold-light: #f0e6c8;
+    --teal: #2a7a6e;
+    --teal-light: #d0eae6;
+    --slate: #4a5568;
+    --border: #d4cfc4;
+    --shadow: rgba(26,20,16,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif SC', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ───── NAVIGATION ───── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold); font-size: 1rem; letter-spacing: 0.05em;
+  }
+  .nav-pills {
+    display: flex; gap: 0.25rem;
+  }
+  .nav-pill {
+    background: none; border: none; cursor: pointer;
+    color: #aaa; font-family: 'Noto Serif SC', serif;
+    font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 20px;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .nav-pill.active, .nav-pill:hover {
+    background: var(--gold); color: var(--ink); font-weight: 600;
+  }
+
+  /* ───── SLIDES CONTAINER ───── */
+  .slides-wrap {
+    padding-top: 56px;
+  }
+
+  /* ───── INDIVIDUAL SLIDE ───── */
+  .slide {
+    min-height: calc(100vh - 56px);
+    display: none;
+    flex-direction: column;
+    animation: slideIn 0.4s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ───── SLIDE 0: TITLE ───── */
+  #slide-0 {
+    background: var(--ink);
+    justify-content: center; align-items: center;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #slide-0::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent, transparent 60px,
+      rgba(184,148,63,0.04) 60px, rgba(184,148,63,0.04) 61px
+    );
+  }
+  .title-content { position: relative; z-index: 1; padding: 3rem; }
+  .title-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold); font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .title-main {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.15; margin-bottom: 1rem;
+  }
+  .title-sub {
+    color: #b0aa9e; font-size: 1rem; line-height: 1.8;
+    max-width: 560px; margin: 0 auto 2.5rem;
+  }
+  .title-pill {
+    display: inline-block; background: var(--gold);
+    color: var(--ink); font-size: 0.8rem; font-weight: 700;
+    padding: 0.5rem 1.5rem; border-radius: 30px; letter-spacing: 0.05em;
+    cursor: pointer; transition: transform 0.2s, background 0.2s;
+    border: none;
+  }
+  .title-pill:hover { transform: scale(1.05); background: #d4a84a; }
+  .topic-badge {
+    margin-top: 2rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(184,148,63,0.3);
+    border-radius: 8px; padding: 1rem 1.5rem;
+    font-size: 0.85rem; color: #c8c4bc; line-height: 1.6;
+    max-width: 600px; margin: 2rem auto 0;
+    font-style: italic;
+  }
+  .topic-badge strong { color: var(--gold); font-style: normal; }
+
+  /* ───── SLIDE HEADER ───── */
+  .slide-header {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 3rem 1.5rem;
+  }
+  .slide-num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold); font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    color: var(--ink); line-height: 1.2;
+  }
+  .slide-desc { color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem; }
+
+  /* ───── SLIDE BODY ───── */
+  .slide-body {
+    flex: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
+  }
+
+  /* ───── DIAGNOSIS SLIDE ───── */
+  .diagnosis-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .diag-card {
+    border-radius: 10px; padding: 1.5rem;
+    border: 1.5px solid var(--border);
+    background: var(--warm-white);
+  }
+  .diag-card.bad { border-color: #e74c3c; background: #fdf5f5; }
+  .diag-card.good { border-color: var(--teal); background: var(--teal-light); }
+  .diag-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.75rem; font-weight: 600;
+  }
+  .diag-card.bad .diag-label { color: #e74c3c; }
+  .diag-card.good .diag-label { color: var(--teal); }
+  .diag-text { font-size: 0.85rem; line-height: 1.7; color: var(--slate); }
+  .diag-text em { color: var(--ink); font-style: normal; font-weight: 600; }
+
+  /* ───── QUESTION ANALYSIS ───── */
+  .q-box {
+    background: var(--ink); color: #f0ebe0;
+    border-radius: 10px; padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--gold);
+  }
+  .q-box .q-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold); font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .q-box .q-text { font-size: 0.9rem; line-height: 1.8; font-style: italic; }
+  .q-box .q-highlight { color: var(--gold); font-style: normal; font-weight: 600; }
+
+  .three-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  }
+  .step-card {
+    border-radius: 10px; border: 1.5px solid var(--border);
+    padding: 1.25rem; background: var(--warm-white);
+    cursor: pointer; transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .step-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--gold); transform: scaleX(0);
+    transform-origin: left; transition: transform 0.3s;
+  }
+  .step-card:hover::before { transform: scaleX(1); }
+  .step-card:hover { box-shadow: 0 4px 16px var(--shadow); transform: translateY(-2px); }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--gold); font-weight: 700;
+    margin-bottom: 0.5rem; line-height: 1;
+  }
+  .step-label { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .step-q { font-size: 0.8rem; color: var(--slate); line-height: 1.6; font-style: italic; }
+
+  /* ───── MODEL CARDS (main content) ───── */
+  .model-nav {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .model-btn {
+    border: 1.5px solid var(--border);
+    background: var(--warm-white); cursor: pointer;
+    padding: 0.5rem 1.1rem; border-radius: 25px;
+    font-family: 'Noto Serif SC', serif; font-size: 0.8rem;
+    transition: all 0.2s; color: var(--slate);
+  }
+  .model-btn.active {
+    background: var(--ink); color: #fff; border-color: var(--ink);
+  }
+
+  .model-panel { display: none; }
+  .model-panel.active { display: block; animation: fadeUp 0.35s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .model-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .info-card {
+    border-radius: 10px; padding: 1.25rem 1.5rem;
+    border: 1.5px solid var(--border); background: var(--warm-white);
+  }
+  .info-card.highlight { border-color: var(--gold); background: var(--gold-light); }
+  .info-card .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 0.6rem;
+  }
+  .info-card.teal-card { border-color: var(--teal); background: var(--teal-light); }
+  .info-card.teal-card .card-label { color: var(--teal); }
+  .info-card.red-card { border-color: #c0392b; background: #fdf5f5; }
+  .info-card.red-card .card-label { color: #c0392b; }
+  .info-card p { font-size: 0.85rem; line-height: 1.75; color: var(--slate); }
+  .info-card strong { color: var(--ink); }
+
+  .model-formula {
+    background: var(--ink); border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .formula-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold); font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .formula-text {
+    color: #f0ebe0; font-size: 0.95rem; line-height: 1.6;
+    flex: 1;
+  }
+  .formula-text .kw { color: var(--gold); font-weight: 600; }
+
+  /* ───── ESSAY SAMPLES ───── */
+  .essay-container { margin-top: 1.5rem; }
+  .essay-tabs { display: flex; gap: 0.5rem; margin-bottom: 0; }
+  .essay-tab {
+    padding: 0.5rem 1rem; cursor: pointer;
+    font-size: 0.8rem; border-radius: 8px 8px 0 0;
+    border: 1.5px solid var(--border); border-bottom: none;
+    background: var(--paper); color: var(--slate); transition: all 0.2s;
+  }
+  .essay-tab.active { background: var(--ink); color: var(--gold); border-color: var(--ink); }
+  .essay-box {
+    background: var(--ink); border-radius: 0 8px 8px 8px;
+    padding: 1.5rem 2rem; border: 1.5px solid var(--ink);
+    display: none;
+  }
+  .essay-box.active { display: block; animation: fadeUp 0.3s ease; }
+  .essay-text {
+    font-size: 0.88rem; line-height: 1.95; color: #e8e3da;
+    font-style: italic;
+  }
+  .essay-text .hl-structure { color: #f7d87a; font-style: normal; }
+  .essay-text .hl-reframe { color: #a8e6cf; font-style: normal; }
+  .essay-text .hl-phrase { color: #ffd1b3; font-style: normal; font-weight: 600; }
+  .essay-legend {
+    display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ───── EXPANSION METHODS ───── */
+  .expand-accordion { margin-top: 0.5rem; }
+  .accord-item {
+    border: 1.5px solid var(--border);
+    border-radius: 8px; margin-bottom: 0.75rem;
+    overflow: hidden; background: var(--warm-white);
+  }
+  .accord-header {
+    padding: 1rem 1.25rem; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.2s;
+  }
+  .accord-header:hover { background: var(--gold-light); }
+  .accord-header.open { background: var(--ink); color: #fff; }
+  .accord-title { font-size: 0.9rem; font-weight: 600; }
+  .accord-icon { font-size: 1.1rem; transition: transform 0.3s; }
+  .accord-header.open .accord-icon { transform: rotate(45deg); }
+  .accord-body {
+    display: none; padding: 1.25rem; border-top: 1.5px solid var(--border);
+    font-size: 0.85rem; line-height: 1.8; color: var(--slate);
+  }
+  .accord-body.show { display: block; animation: fadeUp 0.25s ease; }
+  .method-formula {
+    background: var(--gold-light); border-left: 3px solid var(--gold);
+    padding: 0.6rem 1rem; border-radius: 0 6px 6px 0;
+    margin: 0.75rem 0; font-size: 0.82rem; color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .example-quote {
+    background: #f5f5f5; border-radius: 6px; padding: 0.75rem 1rem;
+    font-style: italic; font-size: 0.82rem; margin-top: 0.5rem;
+    border-left: 3px solid var(--teal); color: var(--ink);
+  }
+
+  /* ───── VOCABULARY SECTION ───── */
+  .vocab-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .vfilter-btn {
+    border: 1.5px solid var(--border); background: var(--warm-white);
+    padding: 0.35rem 0.9rem; border-radius: 20px; cursor: pointer;
+    font-size: 0.78rem; transition: all 0.2s; color: var(--slate);
+  }
+  .vfilter-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .vocab-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+  }
+  .vocab-card {
+    border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 1rem 1.25rem; background: var(--warm-white);
+    transition: all 0.2s; cursor: default;
+  }
+  .vocab-card:hover { box-shadow: 0 3px 12px var(--shadow); transform: translateY(-1px); }
+  .vocab-card.hidden { display: none; }
+  .vocab-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; color: var(--teal); font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .vocab-zh { font-size: 0.82rem; color: var(--slate); margin-bottom: 0.4rem; }
+  .vocab-tag {
+    display: inline-block; font-size: 0.65rem;
+    padding: 0.15rem 0.5rem; border-radius: 10px; font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .tag-reframe { background: var(--gold-light); color: var(--gold); }
+  .tag-commerce { background: var(--teal-light); color: var(--teal); }
+  .tag-critical { background: var(--accent-soft); color: var(--accent); }
+
+  /* ───── QUIZ / PRACTICE ───── */
+  .quiz-card {
+    border: 2px solid var(--border); border-radius: 12px;
+    padding: 1.5rem; background: var(--warm-white); margin-bottom: 1.5rem;
+  }
+  .quiz-prompt { font-size: 0.85rem; color: var(--slate); margin-bottom: 1rem; line-height: 1.7; font-style: italic; }
+  .quiz-prompt strong { color: var(--ink); font-style: normal; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt {
+    padding: 0.75rem 1rem; border-radius: 8px;
+    border: 1.5px solid var(--border); cursor: pointer;
+    font-size: 0.85rem; line-height: 1.6; background: white;
+    transition: all 0.2s; text-align: left;
+    font-family: 'Noto Serif SC', serif; color: var(--ink);
+  }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--gold); background: var(--gold-light); }
+  .quiz-opt.correct { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+  .quiz-opt.wrong { border-color: #e74c3c; background: #fdf5f5; color: #e74c3c; }
+  .quiz-opt.disabled { cursor: default; }
+  .quiz-feedback {
+    margin-top: 1rem; padding: 0.85rem 1.1rem;
+    border-radius: 8px; font-size: 0.85rem; line-height: 1.7;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; animation: fadeUp 0.3s; }
+  .quiz-feedback.success { background: var(--teal-light); color: var(--teal); }
+  .quiz-feedback.fail { background: #fdf5f5; color: #c0392b; }
+
+  /* ───── SUMMARY PAGE ───── */
+  .summary-table {
+    width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;
+  }
+  .summary-table th {
+    background: var(--ink); color: var(--gold);
+    padding: 0.75rem 1rem; text-align: left; font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;
+  }
+  .summary-table td {
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+    font-size: 0.82rem; line-height: 1.6; vertical-align: top;
+  }
+  .summary-table tr:nth-child(even) td { background: var(--warm-white); }
+  .summary-table tr:hover td { background: var(--gold-light); }
+  .model-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    padding: 0.2rem 0.6rem; border-radius: 6px; white-space: nowrap;
+  }
+  .mt1 { background: #e8f4fd; color: #2980b9; }
+  .mt2 { background: #fdf5f5; color: #c0392b; }
+  .mt3 { background: var(--gold-light); color: var(--gold); }
+  .mt4 { background: var(--teal-light); color: var(--teal); }
+
+  /* ───── BOTTOM NAV ───── */
+  .slide-footer {
+    padding: 1rem 3rem;
+    background: var(--warm-white); border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .progress-dots { display: flex; gap: 0.4rem; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); cursor: pointer; transition: background 0.2s;
+  }
+  .dot.active { background: var(--gold); }
+  .nav-btns { display: flex; gap: 0.75rem; }
+  .nav-btn {
+    padding: 0.5rem 1.25rem; border-radius: 25px; cursor: pointer;
+    font-family: 'Noto Serif SC', serif; font-size: 0.82rem;
+    transition: all 0.2s; border: 1.5px solid var(--border);
+    background: var(--warm-white); color: var(--slate);
+  }
+  .nav-btn.primary {
+    background: var(--ink); color: #fff; border-color: var(--ink);
+  }
+  .nav-btn:hover { opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 768px) {
+    .slide-body, .slide-header { padding: 1.25rem 1.25rem; }
+    .diagnosis-grid, .model-grid, .three-steps { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-pills { display: none; }
+    .slide-footer { padding: 0.75rem 1.25rem; }
+    .model-formula { flex-direction: column; }
+  }
+
+  /* ───── TOOLTIPS ───── */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink); color: #f0ebe0; font-size: 0.72rem;
+    padding: 0.4rem 0.7rem; border-radius: 6px; white-space: nowrap;
+    z-index: 200; pointer-events: none; font-style: normal;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Meta 英硕 · 写作精讲</div>
+  <div class="nav-pills" id="navPills"></div>
+</nav>
+
+<div class="slides-wrap" id="slidesWrap">
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 0: TITLE
+═══════════════════════════════════════════════ -->
+<section class="slide active" id="slide-0">
+  <div class="title-content">
+    <div class="title-kicker">IELTS Writing Task 2 · Discuss Both Views</div>
+    <h1 class="title-main">
+      Discuss 题的<br>
+      <em style="color:var(--gold);font-style:normal;">关系重塑</em>四模型
+    </h1>
+    <p class="title-sub">
+      从"各打五十大板"到"降维打击"——<br>
+      掌握考官最想看到的批判性思维框架
+    </p>
+    <button class="title-pill" onclick="goTo(1)">开始学习 →</button>
+    <div class="topic-badge">
+      <strong>本课例题：</strong><br>
+      <em>Some people believe that cheap and fast transportation is required for successful international business while others believe good technology is more important. Discuss both views and give your own opinion.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 1: DIAGNOSIS — 误区分析
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-1">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 01 · DIAGNOSIS</div>
+    <h2 class="slide-title">先做个体检：你现在写的 Discuss，是几分水平？</h2>
+    <p class="slide-desc">点击下方两张卡片，看看普通考生与高分考生的核心差距在哪里</p>
+  </div>
+  <div class="slide-body">
+    <div class="diagnosis-grid">
+      <div class="diag-card bad" onclick="revealCard(this)">
+        <div class="diag-label">❌ 5–6分 的常见写法</div>
+        <div class="diag-text">
+          <p><em>Paragraph 3（自我观点段）：</em></p>
+          <p style="margin-top:0.5rem">In my opinion, <em>both transportation and technology are important</em> for international business. Transportation helps goods move across borders, while technology makes communication easier. Therefore, a balance between the two is necessary for success...</p>
+          <p style="margin-top:0.75rem; color:#c0392b; font-size:0.8rem;">⚠ 问题：论点等同于复述题目 · 无任何批判性立场 · "各打五十大板"毫无洞见</p>
+        </div>
+      </div>
+      <div class="diag-card good" onclick="revealCard(this)">
+        <div class="diag-label">✅ 8–9分 的写法框架</div>
+        <div class="diag-text">
+          <p><em>Paragraph 3（自我观点段核心论点）：</em></p>
+          <p style="margin-top:0.5rem">…framing transportation and technology as <em>competing priorities</em> is a <em>reductive dichotomy</em> that overlooks how <em>digital innovation has systematically subsumed physical logistics</em>. The efficiency of modern "fast" transport is no longer dictated by the speed of an engine, but by the <em>technological systems governing it</em>…</p>
+          <p style="margin-top:0.75rem; color:#2a7a6e; font-size:0.8rem;">✓ 解构题目假设 · 重建两者关系 · 降维打击逻辑</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">🔍 考官真正在看什么？</div>
+      <div class="q-text">
+        雅思 Task 2 Band Descriptors 明确指出，7分以上的文章需要展现 <span class="q-highlight">"a clear and well-developed position"</span> 与 <span class="q-highlight">"relevant, extended and supported ideas"</span>。<br><br>
+        所谓 well-developed，核心不是写多——而是你有没有重塑（<span class="q-highlight">Reframe</span>）两者的关系。大多数考生的观点段，本质上是在做<strong>信息的搬运工</strong>，而非<strong>思想的建筑师</strong>。
+      </div>
+    </div>
+
+    <div class="three-steps">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-label">追问边界</div>
+        <div class="step-q">如果 A 观点极端化，社会会怎样？→ 是否需要 B 来修正边界？</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-label">追问时间轴</div>
+        <div class="step-q">A 是当下手段，B 是终极目的？还是 A 是急救，B 是根治？</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-label">追问包含度</div>
+        <div class="step-q">两者是同一维度的吗？有没有一个其实包含了另一个？</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-1"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(0)">← 上一页</button>
+      <button class="nav-btn primary" onclick="goTo(2)">四大模型 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 2: FOUR MODELS
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-2">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 02 · MODELS</div>
+    <h2 class="slide-title">关系重塑四模型 — 核心讲解</h2>
+    <p class="slide-desc">点击模型标签切换内容，每个模型附有范文段落和高亮分析</p>
+  </div>
+  <div class="slide-body">
+    <div class="model-nav">
+      <button class="model-btn active" onclick="switchModel(0)">模型一 · 共生互补</button>
+      <button class="model-btn" onclick="switchModel(1)">模型二 · 治标/治本</button>
+      <button class="model-btn" onclick="switchModel(2)">模型三 · 跨期投资</button>
+      <button class="model-btn" onclick="switchModel(3)">模型四 · 透视镜关系</button>
+      <button class="model-btn" onclick="switchModel(4)">★ 本题范文 · 包含关系</button>
+    </div>
+
+    <!-- MODEL 0 -->
+    <div class="model-panel active" id="model-0">
+      <div class="model-formula">
+        <span class="formula-label">核心逻辑</span>
+        <span class="formula-text">
+          题目将 A 与 B 包装为<span class="kw">水火不容</span>的对立 →
+          实则：<span class="kw">A 是 B 的物质基础，B 是 A 的升华/方向</span> →
+          失去任何一方，另一方走向极端
+        </span>
+      </div>
+      <div class="model-grid">
+        <div class="info-card red-card">
+          <div class="card-label">⚠ 思维陷阱</div>
+          <p>题目将两个要素包装得<strong>水火不容</strong>，考生容易花大量篇幅论证"谁比谁更好"，最终在 thesis 段就已经输了。</p>
+        </div>
+        <div class="info-card teal-card">
+          <div class="card-label">✓ 重塑方向</div>
+          <p>两者根本不是竞争对手，而是<strong>同一硬币的两面</strong>。<br>缺乏纪律的自由 = 混乱；缺乏自由的纪律 = 压迫。</p>
+        </div>
+        <div class="info-card">
+          <div class="card-label">🎯 适用题型</div>
+          <p><em>Should classrooms use strict discipline or a free environment?</em><br><em>Should cities prioritize economic growth or environmental protection?</em><br>通常出现在两个表面对立、但本质互为前提的概念之间。</p>
+        </div>
+        <div class="info-card highlight">
+          <div class="card-label">💡 论点公式</div>
+          <p><strong>A 是 B 的结构性支架（structural scaffold）</strong><br>→ 推论：没有 A，B 变成混乱；没有 B，A 变成压迫<br>→ 结论：真正的目标在两者共生点上</p>
+        </div>
+      </div>
+      <div class="essay-container">
+        <div class="essay-tabs">
+          <div class="essay-tab active" onclick="switchTab(this, 'sample-0')">范文段落</div>
+          <div class="essay-tab" onclick="switchTab(this, 'analysis-0')">结构解析</div>
+        </div>
+        <div class="essay-box active" id="sample-0">
+          <div class="essay-text">
+            <span class="hl-reframe">Framing discipline and freedom as mutually exclusive choices is a fundamental pedagogical error</span>; in reality, they exist in a deeply symbiotic relationship. <span class="hl-structure">Strict classroom management should not be viewed as the antithesis of autonomy, but rather as its structural scaffold.</span> Without a baseline of order, a "free" learning environment quickly degenerates into chaotic noise, where a student's right to focus is compromised by the disruptive behavior of others. Conversely, <span class="hl-phrase">rigid discipline devoid of intellectual freedom produces mere compliance rather than genuine cognitive engagement.</span> Therefore, meaningful education occurs only when discipline is deployed as a protective perimeter, within which students possess the psychological safety to explore, question, and exercise true academic freedom.
+          </div>
+          <div class="essay-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#a8e6cf"></div><span style="color:#a8e6cf">关系重塑句（Reframing）</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f7d87a"></div><span style="color:#f7d87a">结构性类比</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd1b3"></div><span style="color:#ffd1b3">高阶词组</span></div>
+          </div>
+        </div>
+        <div class="essay-box" id="analysis-0">
+          <div class="essay-text" style="font-style:normal; line-height:2;">
+            <span style="color:var(--gold); font-weight:600;">句1 [Reframing]</span>：直接点明题目假设是错误的——这是9分立意的信号句。<br>
+            <span style="color:var(--gold); font-weight:600;">句2 [类比]</span>：<em>structural scaffold</em>（建筑脚手架）= 视觉化隐喻，把抽象关系具象化。<br>
+            <span style="color:var(--gold); font-weight:600;">句3-4 [对称推演]</span>：分别论证"极端A"和"极端B"的恶果，形成镜像对仗。<br>
+            <span style="color:var(--gold); font-weight:600;">句5 [结论整合]</span>：<em>protective perimeter</em> 封闭论证，收束共生关系。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 1 -->
+    <div class="model-panel" id="model-1">
+      <div class="model-formula">
+        <span class="formula-label">核心逻辑</span>
+        <span class="formula-text">
+          题目比较两种"解决方案" →
+          实则：<span class="kw">A = 治标（Symptom-treating）</span>·短期急救 vs.
+          <span class="kw">B = 治本（Pathology-addressing）</span>·长期免疫
+        </span>
+      </div>
+      <div class="model-grid">
+        <div class="info-card red-card">
+          <div class="card-label">⚠ 思维陷阱</div>
+          <p>题目给出两种手段，通常一种偏"惩罚/应急"，另一种偏"预防/教育"。考生往往<strong>机械地对比优缺点</strong>，忽视了时间维度的差异。</p>
+        </div>
+        <div class="info-card teal-card">
+          <div class="card-label">✓ 重塑方向</div>
+          <p>这不是两个平行方案，而是<strong>跨期权衡</strong>。A 是防止系统崩溃的急救药，B 是长期根除问题的免疫系统。两者在时间轴上分工不同。</p>
+        </div>
+        <div class="info-card">
+          <div class="card-label">🎯 适用题型</div>
+          <p><em>Longer prison sentences vs. rehabilitation programs</em><br><em>Strict punishment vs. education to reduce crime</em><br>通常出现在"惩罚手段"与"预防手段"之间的对比。</p>
+        </div>
+        <div class="info-card highlight">
+          <div class="card-label">💡 关键词汇</div>
+          <p><strong>triage mechanism</strong>（急诊分流机制）<br><strong>root pathogens</strong>（根源病理）<br><strong>superficial / cosmetic fix</strong>（治表）<br><strong>chronically perpetuated</strong>（长期延续的问题）</p>
+        </div>
+      </div>
+      <div class="essay-container">
+        <div class="essay-tabs">
+          <div class="essay-tab active" onclick="switchTab(this, 'sample-1')">范文段落</div>
+          <div class="essay-tab" onclick="switchTab(this, 'analysis-1')">结构解析</div>
+        </div>
+        <div class="essay-box active" id="sample-1">
+          <div class="essay-text">
+            <span class="hl-reframe">The division between punitive incarceration and social rehabilitation mistakes a chronic pathology for an acute symptom.</span> <span class="hl-structure">Prolonged prison sentences operate as an indispensable, albeit superficial, triage mechanism</span>; they physically sequester dangerous individuals, thereby guaranteeing immediate public safety and satisfying the societal demand for retributive justice. However, <span class="hl-phrase">relying solely on confinement is an exercise in futility</span> if the underlying socio-economic drivers of criminality remain unaddressed. Academic disenfranchisement, systemic poverty, and generational trauma are the <span class="hl-phrase">root pathogens that continuously breed new offenders.</span> Therefore, while prisons are required to contain the overflow of social breakdown, strategic investments in community intervention are the only mechanisms capable of <span class="hl-phrase">drying up the reservoir of crime at its source.</span>
+          </div>
+          <div class="essay-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#a8e6cf"></div><span style="color:#a8e6cf">关系重塑句</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f7d87a"></div><span style="color:#f7d87a">结构性类比</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd1b3"></div><span style="color:#ffd1b3">高阶词组</span></div>
+          </div>
+        </div>
+        <div class="essay-box" id="analysis-1">
+          <div class="essay-text" style="font-style:normal; line-height:2;">
+            <span style="color:var(--gold); font-weight:600;">句1 [医学隐喻]</span>：用 <em>pathology vs. symptom</em> 重新定义题目的两个方案，一句话确立整段高度。<br>
+            <span style="color:var(--gold); font-weight:600;">句2 [让步承认]</span>：<em>indispensable, albeit superficial</em> = 先肯定A的价值，再用 albeit 转折降级，体现辩证。<br>
+            <span style="color:var(--gold); font-weight:600;">句3-4 [根源分析]</span>：列举犯罪的社会根源，直接对接"治本"逻辑。<br>
+            <span style="color:var(--gold); font-weight:600;">句5 [水源比喻]</span>：<em>drying up the reservoir</em> = 把抽象"治本"变成有画面感的结尾。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 2 -->
+    <div class="model-panel" id="model-2">
+      <div class="model-formula">
+        <span class="formula-label">核心逻辑</span>
+        <span class="formula-text">
+          题目暗示"投资A = 损害B"（零和博弈）→
+          实则：<span class="kw">对A的投入 ≠ 消耗</span>，而是
+          <span class="kw">对B的长期资本孵化（Long-term Capital Cultivation）</span>
+        </span>
+      </div>
+      <div class="model-grid">
+        <div class="info-card red-card">
+          <div class="card-label">⚠ 思维陷阱</div>
+          <p>题目将资源分配包装为"非此即彼"，即钱投向A就必然牺牲B（通常：<strong>当下实用 vs. 长远精神/文化</strong>）。考生容易陷入"性价比"式论证。</p>
+        </div>
+        <div class="info-card teal-card">
+          <div class="card-label">✓ 重塑方向</div>
+          <p>打破"零和博弈谬误"（Zero-sum Fallacy）：<strong>A 不是消耗，A 是对 B 的隐性长期投资</strong>。语言多样性是认知财富，文化遗产是创意产业的原料库。</p>
+        </div>
+        <div class="info-card">
+          <div class="card-label">🎯 适用题型</div>
+          <p><em>Government funds for endangered languages vs. economic investment</em><br><em>Public arts funding vs. practical infrastructure</em><br>通常出现在"文化/精神投资"与"经济实用性"的对立中。</p>
+        </div>
+        <div class="info-card highlight">
+          <div class="card-label">💡 关键词汇</div>
+          <p><strong>zero-sum lens</strong>（零和视角）<br><strong>invaluable repository</strong>（无价的宝库）<br><strong>short-sighted utilitarianism</strong>（短视功利主义）<br><strong>intellectual property ecosystem</strong>（知识产权生态）</p>
+        </div>
+      </div>
+      <div class="essay-container">
+        <div class="essay-tabs">
+          <div class="essay-tab active" onclick="switchTab(this, 'sample-2')">范文段落</div>
+          <div class="essay-tab" onclick="switchTab(this, 'analysis-2')">结构解析</div>
+        </div>
+        <div class="essay-box active" id="sample-2">
+          <div class="essay-text">
+            <span class="hl-reframe">To dismiss the preservation of endangered languages as an unviable financial luxury is to fall prey to a narrow, short-sighted utilitarianism.</span> Critics view public funding through a <span class="hl-structure">zero-sum lens,</span> assuming that capital allocated to cultural conservation is inherently stolen from tangible infrastructure. This <span class="hl-phrase">economic reductionism</span> overlooks the reality that linguistic diversity is an <span class="hl-phrase">invaluable repository of alternative cognitive frameworks and ecological wisdom.</span> A minority language often encodes centuries of localized botanical and environmental knowledge that modern science has yet to decipher. By funding linguistic revival, governments are not engaging in historical sentimentalism; rather, they are safeguarding a unique <span class="hl-phrase">intellectual property ecosystem</span> that can inspire future breakthroughs in pharmaceuticals, tourism, and the creative industries.
+          </div>
+          <div class="essay-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#a8e6cf"></div><span style="color:#a8e6cf">关系重塑句</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f7d87a"></div><span style="color:#f7d87a">核心框架词</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd1b3"></div><span style="color:#ffd1b3">高阶词组</span></div>
+          </div>
+        </div>
+        <div class="essay-box" id="analysis-2">
+          <div class="essay-text" style="font-style:normal; line-height:2;">
+            <span style="color:var(--gold); font-weight:600;">句1 [反转假设]</span>：<em>to fall prey to</em> = "落入……的陷阱"，直接指出对方的思维错误。<br>
+            <span style="color:var(--gold); font-weight:600;">句2 [命名对手论点]</span>：先准确描述对方的逻辑（zero-sum lens），再逐一击破，有攻有防。<br>
+            <span style="color:var(--gold); font-weight:600;">句3-4 [具体化反驳]</span>：植物学知识编码在语言中 = 把"文化价值"转化为"科技研发价值"，价值观转换是关键。<br>
+            <span style="color:var(--gold); font-weight:600;">句5 [战略升华]</span>：<em>intellectual property ecosystem</em> 完成价值跃迁，使文化保护具有了经济语言。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 3 -->
+    <div class="model-panel" id="model-3">
+      <div class="model-formula">
+        <span class="formula-label">核心逻辑</span>
+        <span class="formula-text">
+          题目比较两个看似平行的要素 →
+          实则：<span class="kw">A = 透视镜（Lens）</span>，提供解读框架；
+          <span class="kw">B = 实体内容（Substance）</span>，提供粗粝原料。
+          两者不在同一维度。
+        </span>
+      </div>
+      <div class="model-grid">
+        <div class="info-card red-card">
+          <div class="card-label">⚠ 思维陷阱</div>
+          <p>题目比较两个截然不同的事物（书本 vs. 实践；网络 vs. 旅行），考生容易<strong>割裂地罗列两者好处</strong>，无法说清楚"哪个更好"。</p>
+        </div>
+        <div class="info-card teal-card">
+          <div class="card-label">✓ 重塑方向</div>
+          <p>它们不是并列的信息源，而是<strong>认知层次不同</strong>：A 提供理论化的认知滤镜，B 提供感官性的现实物质。没有A，B是混乱原料；没有B，A是空洞镜架。</p>
+        </div>
+        <div class="info-card">
+          <div class="card-label">🎯 适用题型</div>
+          <p><em>Internet/TV vs. physical travel for understanding the world</em><br><em>Theoretical knowledge vs. practical experience</em><br>通常出现在"间接认知"与"直接经验"的对比中。</p>
+        </div>
+        <div class="info-card highlight">
+          <div class="card-label">💡 关键词汇</div>
+          <p><strong>interpretive lens</strong>（解读性透视镜）<br><strong>bloodless abstraction</strong>（无血肉感的抽象）<br><strong>cognitive friction</strong>（认知摩擦）<br><strong>visceral sensory details</strong>（直接感官细节）</p>
+        </div>
+      </div>
+      <div class="essay-container">
+        <div class="essay-tabs">
+          <div class="essay-tab active" onclick="switchTab(this, 'sample-3')">范文段落</div>
+          <div class="essay-tab" onclick="switchTab(this, 'analysis-3')">结构解析</div>
+        </div>
+        <div class="essay-box active" id="sample-3">
+          <div class="essay-text">
+            <span class="hl-reframe">The comparison between digital consumption and physical travel rests on a misconception regarding how human knowledge is synthesized.</span> The internet and televised documentaries do not merely compete with physical excursions; instead, they function as the <span class="hl-structure">interpretive lens</span> through which raw experience is filtered. Digital media provides consumers with structured, highly curated overviews of foreign geographies, establishing an intellectual baseline of historical context and societal norms. However, this televised information remains a <span class="hl-phrase">bloodless abstraction</span> until it is stress-tested by the messy reality of physical immersion. Actual travel provides the <span class="hl-phrase">visceral sensory details</span>—the unpredictable human interactions and localized nuances—that shatter preconceived media biases. Ultimate global literacy, therefore, is achieved neither on a screen nor on a plane alone, but in the <span class="hl-phrase">cognitive friction</span> between the digital blueprint and the physical landscape.
+          </div>
+          <div class="essay-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#a8e6cf"></div><span style="color:#a8e6cf">关系重塑句</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f7d87a"></div><span style="color:#f7d87a">核心框架词</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd1b3"></div><span style="color:#ffd1b3">高阶词组</span></div>
+          </div>
+        </div>
+        <div class="essay-box" id="analysis-3">
+          <div class="essay-text" style="font-style:normal; line-height:2;">
+            <span style="color:var(--gold); font-weight:600;">句1 [重新定义问题]</span>：题目本身就是 misconception——不是哪个更好，而是理解错了知识的本质。<br>
+            <span style="color:var(--gold); font-weight:600;">句2-3 [建立透视镜框架]</span>：digital media = lens；旅行 = raw experience。层次区分清晰。<br>
+            <span style="color:var(--gold); font-weight:600;">句4 [让步+转折]</span>：<em>bloodless abstraction</em> = 承认数字媒体的局限，但用生动词汇避免平淡化。<br>
+            <span style="color:var(--gold); font-weight:600;">句6 [哲学式结尾]</span>：<em>cognitive friction</em> 是本段最高密度词汇，把"知识获取"提升到认知论高度。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 4 (本题范文) -->
+    <div class="model-panel" id="model-4">
+      <div class="model-formula">
+        <span class="formula-label">★ 本题核心</span>
+        <span class="formula-text">
+          <span class="kw">包含关系（Subsumption）</span>：科技已经系统性地吞并了交通物流。
+          "交通的快慢"本质上由"科技大脑"决定——
+          <span class="kw">to confuse the vessel with the navigating intelligence</span>
+        </span>
+      </div>
+      <div class="model-grid">
+        <div class="info-card red-card">
+          <div class="card-label">⚠ 常见误区</div>
+          <p>很多考生的第四段是：<em>"I believe technology is more important because…"</em> 然后列举科技优点。这只是在选边站，而非真正的立意重塑。</p>
+        </div>
+        <div class="info-card teal-card">
+          <div class="card-label">✓ 本题重塑逻辑</div>
+          <p>科技与交通不是同一层级的竞争者——<strong>科技已经成为了交通系统的大脑</strong>。GPS追踪、AI路径优化、自动库存管理……所有"快"和"便宜"，其实都是科技在发功。</p>
+        </div>
+        <div class="info-card">
+          <div class="card-label">🔑 核心命题</div>
+          <p><em>"The efficiency of modern 'fast' transport is no longer dictated merely by the speed of an engine, but by the technological systems governing it."</em></p>
+          <p style="margin-top:0.5rem; font-size:0.78rem; color:var(--teal)">→ 这一句是整篇文章的逻辑枢纽，所有段落都在为这一判断铺垫。</p>
+        </div>
+        <div class="info-card highlight">
+          <div class="card-label">💡 核心比喻</div>
+          <p>船只（vessel）= 交通 = 可见的载体<br>导航智慧（navigating intelligence）= 科技 = 真正的驱动力<br><br><strong>to privilege transportation over technology is to confuse the vessel with the navigating intelligence</strong></p>
+        </div>
+      </div>
+      <div class="essay-container">
+        <div class="essay-tabs">
+          <div class="essay-tab active" onclick="switchTab(this, 'sample-4')">范文第四段（自我观点）</div>
+          <div class="essay-tab" onclick="switchTab(this, 'analysis-4')">逐句拆解</div>
+        </div>
+        <div class="essay-box active" id="sample-4">
+          <div class="essay-text">
+            <span class="hl-reframe">In my opinion, framing transportation and technology as competing priorities is a reductive dichotomy that overlooks how digital innovation has systematically subsumed physical logistics.</span> The efficiency of modern, "fast" transport is no longer dictated merely by the speed of an engine, but by the <span class="hl-structure">technological systems governing it.</span> Automated inventory management, real-time GPS tracking, and AI-driven route optimization are what allow contemporary logistics to be both cheap and swift. <span class="hl-phrase">To privilege transportation over technology is to confuse the vessel with the navigating intelligence.</span> While a breakdown in transport <span class="hl-structure">delays a shipment,</span> a breakdown in technology <span class="hl-phrase">paralyzes the entire corporate ecosystem,</span> preventing the transaction from ever being conceived.
+          </div>
+          <div class="essay-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#a8e6cf"></div><span style="color:#a8e6cf">关系重塑·降维打击</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f7d87a"></div><span style="color:#f7d87a">核心论据</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd1b3"></div><span style="color:#ffd1b3">高阶词组/比喻</span></div>
+          </div>
+        </div>
+        <div class="essay-box" id="analysis-4">
+          <div class="essay-text" style="font-style:normal; line-height:2;">
+            <span style="color:var(--gold); font-weight:600;">句1 [Subsumption宣告]</span>：<em>reductive dichotomy</em> = 简化主义的二分法 → 直接宣布题目的前提是错的。<br>
+            <span style="color:var(--gold); font-weight:600;">句2-3 [论据支撑]</span>：GPS / AI路径优化 = 具体举证，把"包含关系"落地。<br>
+            <span style="color:var(--gold); font-weight:600;">句4 [核心比喻]</span>：<em>vessel vs. navigating intelligence</em> = 全文最高密度比喻，可背诵可迁移。<br>
+            <span style="color:var(--gold); font-weight:600;">句5 [量级对比]</span>：<em>delays a shipment</em> vs. <em>paralyzes the entire ecosystem</em> = 量级差异对仗，是说理的最终收锁。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-2"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(1)">← 上一页</button>
+      <button class="nav-btn primary" onclick="goTo(3)">拓展方法 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 3: EXPANSION METHODS
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-3">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 03 · EXPANSION</div>
+    <h2 class="slide-title">很多人知道"树立新关系"，但写不下去——为什么？</h2>
+    <p class="slide-desc">关系建立只是第一步，段落拓展的五种方法，才是真正的写作技术</p>
+  </div>
+  <div class="slide-body">
+    <div class="q-box" style="margin-bottom:1.5rem">
+      <div class="q-label">🧐 诊断常见问题</div>
+      <div class="q-text">
+        考生往往能写出：<em>"Framing A and B as opposites is a reductive dichotomy."</em><br>
+        但下一句就不知道怎么走了，只能重复或空转。<br>
+        根本原因：<strong>缺乏系统性的段落拓展方法</strong>。点击下方标题，展开每种方法。
+      </div>
+    </div>
+
+    <div class="expand-accordion">
+
+      <div class="accord-item">
+        <div class="accord-header" onclick="toggleAccord(this)">
+          <span class="accord-title">📐 方法一：极端化推演（Reductio ad Absurdum）</span>
+          <span class="accord-icon">+</span>
+        </div>
+        <div class="accord-body">
+          <p><strong>原理：</strong>把对方的观点推到逻辑极端，证明其不可持续——这不是"稻草人攻击"，而是对<strong>边界条件的严格检验</strong>。</p>
+          <div class="method-formula">句型模版：If A were to be taken to its logical extreme → B / C would inevitably occur, rendering the original premise self-defeating.</div>
+          <div class="example-quote">
+            "If disciplinary control were taken to its logical extreme, education would be reduced to behavioral conditioning, producing students who are incapable of independent thought—the very antithesis of academic purpose."
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--slate)">⚡ <strong>使用时机：</strong>在建立新关系后，立刻用极端化证明"没有另一要素会怎样"，自然引出共生/补充逻辑。</p>
+        </div>
+      </div>
+
+      <div class="accord-item">
+        <div class="accord-header" onclick="toggleAccord(this)">
+          <span class="accord-title">🔬 方法二：机制分析（Mechanism Unpacking）</span>
+          <span class="accord-icon">+</span>
+        </div>
+        <div class="accord-body">
+          <p><strong>原理：</strong>不满足于说"A导致B"，而是拆解<strong>A是通过什么中间机制导致B的</strong>。这是让段落"有厚度"最有效的方法。</p>
+          <div class="method-formula">句型模版：A does not merely [surface effect]; rather, it operates by [mechanism], which in turn [deeper consequence].</div>
+          <div class="example-quote">
+            "Technology does not merely 'speed up' communication; rather, it operates by eliminating information asymmetry between trading parties, which in turn removes the fundamental trust deficit that has historically made cross-border transactions prohibitively risky."
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--slate)">⚡ <strong>使用时机：</strong>当你说完"科技更重要"之后，不要马上举例子，先解释<strong>为什么/通过什么路径</strong>。机制层面才是深度所在。</p>
+        </div>
+      </div>
+
+      <div class="accord-item">
+        <div class="accord-header" onclick="toggleAccord(this)">
+          <span class="accord-title">⚖️ 方法三：量级对比（Scale Differentiation）</span>
+          <span class="accord-icon">+</span>
+        </div>
+        <div class="accord-body">
+          <p><strong>原理：</strong>不说A"好"、B"差"，而是说A出问题的后果<strong>量级更大</strong>，从而确立优先级。这是本题范文最精妙的手法。</p>
+          <div class="method-formula">句型模版：While [A fails] → [minor consequence], [B fails] → [catastrophic consequence], suggesting that [B] constitutes the more critical dependency.</div>
+          <div class="example-quote">
+            "While a breakdown in transport <strong>delays a shipment</strong>, a breakdown in technology <strong>paralyzes the entire corporate ecosystem</strong>, preventing the transaction from ever being conceived."
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--slate)">⚡ <strong>使用时机：</strong>特别适合"Discuss + opinion"的结尾句，用量级差异锁定自己的立场。注意必须<strong>同类比较</strong>（都是"失效"的后果），否则不公平。</p>
+        </div>
+      </div>
+
+      <div class="accord-item">
+        <div class="accord-header" onclick="toggleAccord(this)">
+          <span class="accord-title">🖼️ 方法四：视觉化比喻（Conceptual Metaphor）</span>
+          <span class="accord-icon">+</span>
+        </div>
+        <div class="accord-body">
+          <p><strong>原理：</strong>用一个具体的、有画面感的<strong>类比框架</strong>来承载抽象的逻辑关系，使读者一秒理解复杂命题。</p>
+          <div class="method-formula">结构：[抽象关系] + "is analogous to" / "resembles" / "mirrors" + [具体类比] → 解释类比中哪个部分对应哪个概念</div>
+          <p style="margin-top:0.75rem;">本题中的典范：</p>
+          <div class="example-quote">
+            <strong>Vessel（船只）</strong> = Transportation（有形的载体，能看见、能摸到）<br>
+            <strong>Navigating Intelligence（导航智慧）</strong> = Technology（无形的驱动力，决定方向和效率）<br><br>
+            → 把"科技包含交通"这个抽象关系，变成人人都能理解的船航行的画面
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--slate)">⚡ <strong>迁移练习：</strong>把"软件与硬件"、"基因与环境"、"法律与道德"等关系，尝试用比喻框架表达出来。</p>
+        </div>
+      </div>
+
+      <div class="accord-item">
+        <div class="accord-header" onclick="toggleAccord(this)">
+          <span class="accord-title">🔄 方法五：让步-反驳结构（Concession-Rebuttal）</span>
+          <span class="accord-icon">+</span>
+        </div>
+        <div class="accord-body">
+          <p><strong>原理：</strong>先<strong>真诚地承认对方观点的合理性</strong>（concession），再在更高维度上推翻或条件化它（rebuttal）。这能展现辩证思维，避免"一刀切"。</p>
+          <div class="method-formula">句型模版：Admittedly / While it is true that [A has merit in context X], this advantage is [qualified / conditional / secondary] because [deeper principle].</div>
+          <div class="example-quote">
+            "Admittedly, in sectors where physical goods dominate—bulk commodities, perishable agriculture, or industrial machinery—transportation infrastructure remains the immediate constraint on commercial viability. Yet this very dependency on physical movement is rapidly diminishing as digital platforms expand the domain of tradeable services from 20% to a projected 50% of global commerce."
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--slate)">⚡ <strong>注意：</strong>让步必须"真让步"，而非虚假客套。真让步 = 找到对方观点最有力的版本，然后指出其适用条件是有限的（条件限定 > 全盘否定）。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-3"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(2)">← 四大模型</button>
+      <button class="nav-btn primary" onclick="goTo(4)">核心词汇 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 4: VOCABULARY
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-4">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 04 · VOCABULARY</div>
+    <h2 class="slide-title">高分词组图鉴 — 按类别筛选</h2>
+    <p class="slide-desc">不是背单词，是掌握"词组思维"——每个搭配背后都有一个论证姿态</p>
+  </div>
+  <div class="slide-body">
+    <div class="vocab-filter">
+      <button class="vfilter-btn active" onclick="filterVocab('all', this)">全部</button>
+      <button class="vfilter-btn" onclick="filterVocab('reframe', this)">关系重塑</button>
+      <button class="vfilter-btn" onclick="filterVocab('commerce', this)">商业贸易</button>
+      <button class="vfilter-btn" onclick="filterVocab('critical', this)">批判思辨</button>
+    </div>
+    <div class="vocab-grid" id="vocabGrid">
+
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">reductive dichotomy</div>
+        <div class="vocab-zh">简化主义的二分法 / 非黑即白的机械对立</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">systematically subsumed</div>
+        <div class="vocab-zh">系统性地吞并/包含（科技将交通纳入自身体系）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">structural scaffold</div>
+        <div class="vocab-zh">结构性支架（A是B的建筑脚手架）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">symbiotic relationship</div>
+        <div class="vocab-zh">共生关系（模型一核心术语）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">triage mechanism</div>
+        <div class="vocab-zh">急诊分流机制（治标的短期手段）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">zero-sum lens</div>
+        <div class="vocab-zh">零和博弈视角（批判对立思维的武器）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">interpretive lens</div>
+        <div class="vocab-zh">解读性透视镜（模型四的核心框架）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="reframe">
+        <div class="vocab-en">confuse the vessel with the navigating intelligence</div>
+        <div class="vocab-zh">把载体错当作导航智慧（本题核心比喻）</div>
+        <span class="vocab-tag tag-reframe">关系重塑</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">marginal cost of production</div>
+        <div class="vocab-zh">生产的边际成本（经济学概念）</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">circulatory system of globalization</div>
+        <div class="vocab-zh">全球化的血液循环系统（生动的宏观比喻）</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">genesis of modern transactional trust</div>
+        <div class="vocab-zh">现代交易信任的催生/起源</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">asymmetric information</div>
+        <div class="vocab-zh">信息不对称（高阶经济学概念）</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">artificial trade barriers</div>
+        <div class="vocab-zh">人为的贸易壁垒</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">volatile market demands</div>
+        <div class="vocab-zh">波动剧烈的市场需求</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="commerce">
+        <div class="vocab-en">cognitive framework</div>
+        <div class="vocab-zh">认知框架（科技提供的深层功能）</div>
+        <span class="vocab-tag tag-commerce">商业贸易</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">absolute constraint on...</div>
+        <div class="vocab-zh">对……的绝对制约</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">effectively collapsed geographical distance</div>
+        <div class="vocab-zh">有效地瓦解了地理距离（"天涯若比邻"的高级表达）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">thrive in a vacuum devoid of...</div>
+        <div class="vocab-zh">在缺乏……的真空中繁荣（形象表达"离不开"）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">bloodless abstraction</div>
+        <div class="vocab-zh">无血肉感的抽象（纯理论/间接信息的生动描述）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">cognitive friction</div>
+        <div class="vocab-zh">认知摩擦（知识深化的必要过程）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">short-sighted utilitarianism</div>
+        <div class="vocab-zh">短视功利主义（批判只看眼前利益的价值观）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+      <div class="vocab-card" data-cat="critical">
+        <div class="vocab-en">prescriptive rather than merely descriptive</div>
+        <div class="vocab-zh">引导性而非仅描述性的（科技具有预测/规定未来的能力）</div>
+        <span class="vocab-tag tag-critical">批判思辨</span>
+      </div>
+
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-4"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(3)">← 拓展方法</button>
+      <button class="nav-btn primary" onclick="goTo(5)">课堂练习 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 5: PRACTICE QUIZ
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-5">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 05 · PRACTICE</div>
+    <h2 class="slide-title">现场练习 — 判断题目对应哪个模型</h2>
+    <p class="slide-desc">读题→追问三步→选择最合适的关系重塑模型，点击选项后查看解析</p>
+  </div>
+  <div class="slide-body">
+
+    <div class="quiz-card">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--gold); letter-spacing:0.1em; margin-bottom:0.75rem;">QUESTION 01</div>
+      <div class="quiz-prompt">
+        <strong>题目：</strong> <em>Some people think that the best way to improve public health is to increase the number of sports facilities. Others, however, think that this would have little effect, and that other measures are needed. Discuss both views and give your own opinion.</em>
+        <br><br>
+        你会使用哪个模型来构建自我观点段？
+      </div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q1', '共生互补模型（模型一）适用于两者本质上互为前提的情形。体育设施和教育/政策是可以并行的，但体育设施属于"治标"，更深层的是改变生活习惯和健康意识——这是时间轴上的差异，更接近模型二。')">
+          模型一 · 共生互补（Symbiosis）
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'q1', '✓ 正确！体育设施是一个外部"环境诱因"（immediate prompt），但公共健康真正的决定因素是人们长期的行为模式和健康意识（根本动因）。设施建设是"治标"——减少参与壁垒；但如果人们缺乏健康意识和运动意志，再多的设施也会空置。因此，教育、文化转变、医疗预防才是"治本"。这是经典的治标/治本关系。')">
+          模型二 · 治标/治本（Pathology vs. Symptom）
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q1', '跨期投资模型（模型三）通常出现在"文化/精神投资"被批评为"经济浪费"的场景中。本题两者并无直接的资源竞争关系，且没有明显的"零和博弈"框架，因此不是最佳选择。')">
+          模型三 · 跨期投资（Zero-sum Fallacy）
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q1', '透视镜模型（模型四）适用于"间接认知/直接经验"这类信息层次不同的情形。本题比较的是政策手段，并非认知媒介，不适合此模型。')">
+          模型四 · 透视镜关系（Lens & Substance）
+        </button>
+      </div>
+      <div class="quiz-feedback" id="q1"></div>
+    </div>
+
+    <div class="quiz-card">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--gold); letter-spacing:0.1em; margin-bottom:0.75rem;">QUESTION 02</div>
+      <div class="quiz-prompt">
+        <strong>题目：</strong> <em>Some people believe that children should begin formal education from a very young age. Others believe that they should not start school until they are older. Discuss both views and give your own opinion.</em>
+        <br><br>
+        以下哪个"观点段论点"是真正的关系重塑，而非简单的选边站？
+      </div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q2', '这是典型的"选边站"写法：直接表明立场，但没有重塑两者关系，没有回答"为什么早期教育这个命题本身的前提是有问题的"。')">
+          "In my view, formal education should begin at an older age because young children need unstructured play."
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q2', '这是模型一（共生互补）的思路，说"两者都需要"其实只是强调平衡，没有真正指出它们在时间维度上如何分工，论点深度不足，且"balance"类论点几乎不会拿到高分。')">
+          "Both early education and delayed schooling have merits, and a balance between structured learning and free play is the ideal approach."
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'q2', '✓ 精彩！这是模型二（治标/治本）与模型三（跨期投资）的结合。论点核心是：把"起始年龄"（时间节点）的讨论，转变为"教育内容的适配性"（深层标准）的讨论。隐含逻辑：问题不在"早or晚"，而在"用什么方式教"。这解构了题目的二元对立，是真正的降维打击。')">
+          "The debate over starting age is a proxy debate; the real question is whether formal academic instruction is developmentally aligned with the cognitive architecture of the child at any given stage."
+        </button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'q2', '这只是为一方立场提供了具体支撑，属于论据层面，而非关系重塑层面的论点（argument）。在观点段，这可以作为支撑句，但不能作为核心论点出现。')">
+          "Early education exposes children to social interactions, which research shows is critical for emotional development."
+        </button>
+      </div>
+      <div class="quiz-feedback" id="q2"></div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-5"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(4)">← 核心词汇</button>
+      <button class="nav-btn primary" onclick="goTo(6)">总结回顾 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 6: SUMMARY
+═══════════════════════════════════════════════ -->
+<section class="slide" id="slide-6">
+  <div class="slide-header">
+    <div class="slide-num">SLIDE 06 · SUMMARY</div>
+    <h2 class="slide-title">课堂总结 — 关系重塑四模型速查表</h2>
+    <p class="slide-desc">考场三步追问 + 四模型对照 + 段落拓展清单</p>
+  </div>
+  <div class="slide-body">
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>识别特征</th>
+          <th>重塑逻辑</th>
+          <th>核心词汇</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="model-tag mt1">模型一<br>共生互补</span></td>
+          <td style="font-size:0.8rem">两要素表面对立，实则互为前提；极端化任何一方都会走向反面</td>
+          <td style="font-size:0.8rem">A 是 B 的结构支架；B 是 A 的最终目的</td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.75rem">symbiotic relationship<br>structural scaffold<br>protective perimeter</td>
+        </tr>
+        <tr>
+          <td><span class="model-tag mt2">模型二<br>治标/治本</span></td>
+          <td style="font-size:0.8rem">一手段"应急/惩罚"，另一手段"预防/根治"；时间轴有明显跨期差异</td>
+          <td style="font-size:0.8rem">A = 急救药（治标），B = 免疫系统（治本）</td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.75rem">triage mechanism<br>root pathogens<br>reservoir of crime</td>
+        </tr>
+        <tr>
+          <td><span class="model-tag mt3">模型三<br>跨期投资</span></td>
+          <td style="font-size:0.8rem">题目暗示"资源零和博弈"；通常有文化/精神价值 vs. 经济实用性的对立</td>
+          <td style="font-size:0.8rem">对 A 的投入 ≠ 消耗，是对 B 的长期资本孵化</td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.75rem">zero-sum lens<br>invaluable repository<br>intellectual property ecosystem</td>
+        </tr>
+        <tr>
+          <td><span class="model-tag mt4">模型四<br>透视镜</span></td>
+          <td style="font-size:0.8rem">比较两种"认知来源"或"经验方式"；一个提供框架，一个提供原料</td>
+          <td style="font-size:0.8rem">A = 认知滤镜（Lens），B = 现实物质（Substance）；层级不同</td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.75rem">interpretive lens<br>bloodless abstraction<br>cognitive friction</td>
+        </tr>
+        <tr>
+          <td><span class="model-tag" style="background:#f0e6c8; color:#6b4c1e;">★ 包含关系<br>本题</span></td>
+          <td style="font-size:0.8rem">一要素已经在功能上完全涵盖了另一要素；维度不平等</td>
+          <td style="font-size:0.8rem">科技系统性吞并交通；交通的快慢由科技决定</td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.75rem">systematically subsumed<br>vessel vs. navigating intelligence<br>reductive dichotomy</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="q-box" style="margin-bottom:1.5rem">
+      <div class="q-label">🎯 考场三步追问（快速决策工具）</div>
+      <div class="q-text">
+        <strong>追问一 · 边界：</strong>如果 A 走到极端，社会会怎样？需要 B 来修正吗？→ <span class="q-highlight">模型一</span><br>
+        <strong>追问二 · 时间轴：</strong>A 是当下手段，B 是长期目的？A 是急救，B 是根治？→ <span class="q-highlight">模型二/三</span><br>
+        <strong>追问三 · 包含度：</strong>两者同一维度吗？有没有一个包含或决定了另一个？→ <span class="q-highlight">模型四/包含</span>
+      </div>
+    </div>
+
+    <div class="three-steps">
+      <div class="step-card">
+        <div class="step-num" style="font-size:1.2rem; color:var(--teal)">📋</div>
+        <div class="step-label">段落拓展五法</div>
+        <div class="step-q">极端化推演 · 机制分析 · 量级对比 · 视觉化比喻 · 让步反驳</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num" style="font-size:1.2rem; color:var(--teal)">💬</div>
+        <div class="step-label">作业建议</div>
+        <div class="step-q">选一道2024年真题，用三步追问确定模型，写出完整的Opinion Paragraph</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num" style="font-size:1.2rem; color:var(--teal)">🔄</div>
+        <div class="step-label">迁移思维</div>
+        <div class="step-q">本堂课的"关系重塑"逻辑，同样适用于 Agree/Disagree 题型的 nuanced position 写法</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="progress-dots" id="dots-6"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="goTo(5)">← 课堂练习</button>
+      <button class="nav-btn primary" onclick="goTo(0)">回到开始 ↑</button>
+    </div>
+  </div>
+</section>
+
+</div><!-- end slides-wrap -->
+
+<script>
+// ─── SLIDE STATE ───
+const SLIDE_TITLES = [
+  '封面', '误区诊断', '四大模型', '拓展方法', '核心词汇', '课堂练习', '总结'
+];
+const TOTAL = 7;
+let current = 0;
+
+function goTo(n) {
+  document.getElementById('slide-' + current).classList.remove('active');
+  current = n;
+  document.getElementById('slide-' + n).classList.add('active');
+  updateNav();
+  window.scrollTo(0, 0);
+}
+
+function updateNav() {
+  // pills
+  const pills = document.getElementById('navPills');
+  pills.innerHTML = '';
+  SLIDE_TITLES.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.className = 'nav-pill' + (i === current ? ' active' : '');
+    b.textContent = t;
+    b.onclick = () => goTo(i);
+    pills.appendChild(b);
+  });
+  // dots in each slide footer
+  for (let s = 1; s < TOTAL; s++) {
+    const el = document.getElementById('dots-' + s);
+    if (!el) continue;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' active' : '');
+      d.onclick = () => goTo(i);
+      el.appendChild(d);
+    }
+  }
+}
+
+// ─── MODEL SWITCHER ───
+function switchModel(n) {
+  document.querySelectorAll('.model-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.model-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === n);
+  });
+}
+
+// ─── ESSAY TABS ───
+function switchTab(tabEl, targetId) {
+  const container = tabEl.closest('.essay-container');
+  container.querySelectorAll('.essay-tab').forEach(t => t.classList.remove('active'));
+  container.querySelectorAll('.essay-box').forEach(b => b.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById(targetId).classList.add('active');
+}
+
+// ─── ACCORDION ───
+function toggleAccord(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  // close all
+  document.querySelectorAll('.accord-header.open').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('show');
+  });
+  if (!isOpen) {
+    header.classList.add('open');
+    body.classList.add('show');
+  }
+}
+
+// ─── VOCAB FILTER ───
+function filterVocab(cat, btn) {
+  document.querySelectorAll('.vfilter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.vocab-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+// ─── QUIZ ───
+function answerQuiz(btn, correct, qId, explanation) {
+  const card = btn.closest('.quiz-card');
+  if (card.querySelector('.disabled')) return; // already answered
+  card.querySelectorAll('.quiz-opt').forEach(b => b.classList.add('disabled'));
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    // highlight no correct answer here (by design, user finds the right one through feedback)
+  }
+  const fb = document.getElementById(qId);
+  fb.textContent = explanation;
+  fb.className = 'quiz-feedback show ' + (correct ? 'success' : 'fail');
+}
+
+// ─── REVEAL CARD ANIMATION ───
+function revealCard(card) {
+  card.style.transform = 'scale(1.02)';
+  setTimeout(() => { card.style.transform = ''; }, 200);
+}
+
+// ─── INIT ───
+updateNav();
+</script>
+</body>
+</html>
